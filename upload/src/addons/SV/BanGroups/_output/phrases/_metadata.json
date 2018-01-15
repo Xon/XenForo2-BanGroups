@@ -1,0 +1,26 @@
+{
+    "option.sv_addBanUserGroupPerm.txt": {
+        "global_cache": false,
+        "version_id": 2000000,
+        "version_string": "2.0.0",
+        "hash": "a60796785b3a47208004b66ef1dd22f7"
+    },
+    "option.sv_addBanUserGroupSpam.txt": {
+        "global_cache": false,
+        "version_id": 2000000,
+        "version_string": "2.0.0",
+        "hash": "0c8346d62168a0e7a200071ac67a0ffa"
+    },
+    "option_explain.sv_addBanUserGroupPerm.txt": {
+        "global_cache": false,
+        "version_id": 1000000,
+        "version_string": "1.0.0",
+        "hash": "03bfcfa0e119d27e5fec2105a64473b3"
+    },
+    "option_explain.sv_addBanUserGroupSpam.txt": {
+        "global_cache": false,
+        "version_id": 1000000,
+        "version_string": "1.0.0",
+        "hash": "711586fa8eceb232353c66d9cd62dc76"
+    }
+}
