@@ -1,6 +1,6 @@
 {
     "from_class": "XF\\Spam\\Cleaner",
     "to_class": "SV\\BanGroups\\XF\\Spam\\Cleaner",
-    "execute_order": 10,
+    "execute_order": 6075,
     "active": true
 }
