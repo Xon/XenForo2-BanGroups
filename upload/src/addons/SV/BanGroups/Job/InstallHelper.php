@@ -11,7 +11,7 @@ namespace SV\BanGroups\Job;
 
 use XF\Entity\Option;
 
-class UserRatingCount extends \XF\Job\AbstractJob
+class InstallHelper extends \XF\Job\AbstractJob
 {
 
     public function run($maxRunTime)
