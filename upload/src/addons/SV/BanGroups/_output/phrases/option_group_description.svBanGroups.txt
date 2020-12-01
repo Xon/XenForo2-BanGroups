@@ -1,0 +1,1 @@
+Use different groups depending on ban action, and on rejecting/disabling a user

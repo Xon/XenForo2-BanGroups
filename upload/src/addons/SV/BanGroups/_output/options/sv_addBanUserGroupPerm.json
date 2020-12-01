@@ -1,12 +1,13 @@
 {
     "edit_format": "callback",
     "edit_format_params": "XF\\Option\\UserGroup::renderSelect",
-    "data_type": "integer",
+    "data_type": "unsigned_integer",
     "sub_options": [],
     "validation_class": "",
     "validation_method": "",
-    "default_value": "",
+    "default_value": "0",
     "relations": {
-        "discourager": 409
+        "discourager": 409,
+        "svBanGroups": 409
     }
 }
