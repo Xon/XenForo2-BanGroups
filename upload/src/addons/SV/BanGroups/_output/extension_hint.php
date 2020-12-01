@@ -5,6 +5,7 @@
 
 namespace SV\BanGroups\XF\Entity
 {
+	class XFCP_User extends \XF\Entity\User {}
 	class XFCP_UserBan extends \XF\Entity\UserBan {}
 }
 

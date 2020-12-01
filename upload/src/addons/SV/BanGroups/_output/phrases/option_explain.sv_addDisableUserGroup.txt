@@ -1,0 +1,1 @@
+When a user is disabled, they can be added to a specific user group. This allows overrides to their user group styling, for example.
