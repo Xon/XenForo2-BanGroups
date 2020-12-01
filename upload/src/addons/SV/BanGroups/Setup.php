@@ -6,6 +6,7 @@ use XF\AddOn\AbstractSetup;
 use XF\AddOn\StepRunnerInstallTrait;
 use XF\AddOn\StepRunnerUninstallTrait;
 use XF\AddOn\StepRunnerUpgradeTrait;
+use XF\Entity\Option;
 
 class Setup extends AbstractSetup
 {
@@ -13,20 +14,31 @@ class Setup extends AbstractSetup
 	use StepRunnerUpgradeTrait;
 	use StepRunnerUninstallTrait;
 
-    /**
-     * Applies database schema changes.
-     */
-    public function installStep1()
+    public function postInstall(array &$stateChanges)
     {
-        if (\XF::options()->addBanUserGroup)
+        $options = \XF:: options();
+        $val = $options->addBanUserGroup;
+        if (!$val)
         {
-            // options haven't been created yet. Create a deferred task todo it after this
-            \XF::app()->jobManager()->enqueueUnique(
-                'SV\BanGroups',
-                'SV\BanGroups:InstallHelper',
-                [],
-                false
-            );
+            return;
+        }
+
+        $options->sv_addBanUserGroupSpam = $val;
+        /** @var Option $entity */
+        $entity = \XF::finder('XF:Option')->whereId('sv_addBanUserGroupSpam')->fetchOne();
+        if ($entity)
+        {
+            $entity->option_value = $val;
+            $entity->save();
+        }
+
+        $options->sv_addBanUserGroupPerm = $val;
+        /** @var Option $entity */
+        $entity = \XF::finder('XF:Option')->whereId('sv_addBanUserGroupPerm')->fetchOne();
+        if ($entity)
+        {
+            $entity->option_value = $val;
+            $entity->save();
         }
     }
 
