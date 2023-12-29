@@ -1,5 +1,6 @@
 {
     "icon": "fa-ban",
     "display_order": 139,
+    "advanced": false,
     "debug_only": false
 }
