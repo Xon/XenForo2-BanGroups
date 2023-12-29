@@ -2,7 +2,7 @@
     "legacy_addon_id": "SV_BanGroups",
     "title": "Ban Groups",
     "description": "Use different groups depending on ban action, and on rejecting/disabling a user",
-    "version_id": 2020000,
+    "version_id": 1703850304,
     "version_string": "2.2.0",
     "dev": "Xon",
     "dev_url": "https://atelieraphelion.com",
@@ -12,9 +12,15 @@
         "License": "MIT License",
         "Add-on site": "https://atelieraphelion.com/products/ban-groups.202/"
     },
-    "require" : {
-        "XF": [2020070, "XenForo 2.2.0+"],
-        "php": ["7.2.0", "PHP 7.2.0+"]
+    "require": {
+        "XF": [
+            2020070,
+            "XenForo 2.2.0+"
+        ],
+        "php": [
+            "7.2.0",
+            "PHP 7.2.0+"
+        ]
     },
     "icon": "fa-ban"
 }
