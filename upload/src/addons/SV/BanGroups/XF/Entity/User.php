@@ -24,13 +24,13 @@ class User extends XFCP_User
             $userGroupChangeService = $this->app()->service('XF:User\UserGroupChange');
             if ($rejectionChange !== false)
             {
-                $rejectGroup = isset($options->sv_addRejectUserGroup) ? (int)$options->sv_addRejectUserGroup : 0;
+                $rejectGroup = (int)($options->sv_addRejectUserGroup?? 0);
                 $this->svBanUserSavableFn[] = function () use ($rejectionChange, $rejectGroup, $userGroupChangeService) {
-                    if ($rejectGroup && $rejectionChange === 'enter')
+                    if ($rejectGroup !== 0 && $rejectionChange === 'enter')
                     {
                         $userGroupChangeService->addUserGroupChange($this->user_id, 'svRejectedUserGroup', $rejectGroup);
                     }
-                    else if (!$rejectGroup || $rejectionChange === 'leave')
+                    else if ($rejectGroup === 0 || $rejectionChange === 'leave')
                     {
                         $userGroupChangeService->removeUserGroupChange($this->user_id, 'svRejectedUserGroup');
                     }
@@ -38,13 +38,13 @@ class User extends XFCP_User
             }
             if ($disabledChange !== false)
             {
-                $disableGroup = isset($options->sv_addDisableUserGroup) ? (int)$options->sv_addDisableUserGroup : 0;
+                $disableGroup = (int)($options->sv_addDisableUserGroup ?? 0);
                 $this->svBanUserSavableFn[] = function () use ($disabledChange, $disableGroup, $userGroupChangeService) {
-                    if ($disableGroup && $disabledChange === 'enter')
+                    if ($disableGroup !== 0 && $disabledChange === 'enter')
                     {
                         $userGroupChangeService->addUserGroupChange($this->user_id, 'svDisabledUserGroup', $disableGroup);
                     }
-                    else if (!$disableGroup || $disabledChange === 'leave')
+                    else if ($disableGroup === 0 || $disabledChange === 'leave')
                     {
                         $userGroupChangeService->removeUserGroupChange($this->user_id, 'svDisabledUserGroup');
                     }

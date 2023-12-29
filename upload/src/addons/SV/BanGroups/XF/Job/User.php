@@ -2,6 +2,8 @@
 
 namespace SV\BanGroups\XF\Job;
 
+use XF\Service\User\UserGroupChange as UserGroupChangeService;
+
 /**
  * Extends \XF\Job\User
  */
@@ -9,39 +11,39 @@ class User extends XFCP_User
 {
     protected function rebuildById($id)
     {
-        $ret = parent::rebuildById($id);
+        parent::rebuildById($id);
 
         /** @var \XF\Entity\User $user */
         $userId = (int)$id;
         $user = $this->app->em()->findCached('XF:User', $userId);
-        if ($user)
+        if (!$user)
         {
-            $options = \XF::options();
-            /** @var \XF\Service\User\UserGroupChange $userGroupChangeService */
-            $userGroupChangeService = \XF::app()->service('XF:User\UserGroupChange');
-            $rejectGroup = isset($options->sv_addRejectUserGroup) ? (int)$options->sv_addRejectUserGroup : 0;
-            $disableGroup = isset($options->sv_addDisableUserGroup) ? (int)$options->sv_addDisableUserGroup : 0;
-
-            $userId = $user->user_id;
-            if ($user->user_state === 'rejected' && $rejectGroup)
-            {
-                $userGroupChangeService->addUserGroupChange($userId, 'svRejectedUserGroup', $rejectGroup);
-            }
-            else
-            {
-                $userGroupChangeService->removeUserGroupChange($userId, 'svRejectedUserGroup');
-            }
-
-            if ($user->user_state === 'disabled' && $disableGroup)
-            {
-                $userGroupChangeService->addUserGroupChange($userId, 'svDisabledUserGroup', $disableGroup);
-            }
-            else
-            {
-                $userGroupChangeService->removeUserGroupChange($userId, 'svDisabledUserGroup');
-            }
+            return;
         }
 
-        return $ret;
+        $options = \XF::options();
+        /** @var UserGroupChangeService $userGroupChangeService */
+        $userGroupChangeService = \XF::app()->service('XF:User\UserGroupChange');
+        $rejectGroup = (int)($options->sv_addRejectUserGroup ?? 0);
+        $disableGroup = (int)($options->sv_addDisableUserGroup ?? 0);
+
+        $userId = $user->user_id;
+        if ($user->user_state === 'rejected' && $rejectGroup !== 0)
+        {
+            $userGroupChangeService->addUserGroupChange($userId, 'svRejectedUserGroup', $rejectGroup);
+        }
+        else
+        {
+            $userGroupChangeService->removeUserGroupChange($userId, 'svRejectedUserGroup');
+        }
+
+        if ($user->user_state === 'disabled' && $disableGroup !== 0)
+        {
+            $userGroupChangeService->addUserGroupChange($userId, 'svDisabledUserGroup', $disableGroup);
+        }
+        else
+        {
+            $userGroupChangeService->removeUserGroupChange($userId, 'svDisabledUserGroup');
+        }
     }
 }

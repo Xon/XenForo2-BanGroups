@@ -8,7 +8,7 @@ class UserBan extends XFCP_UserBan
 {
     protected function setIsBanned($isBanned)
     {
-        if (Globals::$isSpamCleaningBan)
+        if (Globals::$isSpamCleaningBan ?? false)
         {
             $this->setOption('ban_user_group', \XF::options()->sv_addBanUserGroupSpam);
         }
@@ -19,7 +19,7 @@ class UserBan extends XFCP_UserBan
 
         try
         {
-            return parent::setIsBanned($isBanned);
+            parent::setIsBanned($isBanned);
         }
         finally
         {

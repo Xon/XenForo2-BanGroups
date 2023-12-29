@@ -14,7 +14,7 @@ class Setup extends AbstractSetup
 	use StepRunnerUpgradeTrait;
 	use StepRunnerUninstallTrait;
 
-    public function postInstall(array &$stateChanges)
+    public function postInstall(array &$stateChanges): void
     {
         $options = \XF:: options();
         $val = $options->addBanUserGroup;
@@ -25,8 +25,10 @@ class Setup extends AbstractSetup
 
         $options->sv_addBanUserGroupSpam = $val;
         /** @var Option $entity */
-        $entity = \XF::finder('XF:Option')->whereId('sv_addBanUserGroupSpam')->fetchOne();
-        if ($entity)
+        $entity = \XF::finder('XF:Option')
+                     ->whereId('sv_addBanUserGroupSpam')
+                     ->fetchOne();
+        if ($entity !== null)
         {
             $entity->option_value = $val;
             $entity->save();
@@ -34,12 +36,13 @@ class Setup extends AbstractSetup
 
         $options->sv_addBanUserGroupPerm = $val;
         /** @var Option $entity */
-        $entity = \XF::finder('XF:Option')->whereId('sv_addBanUserGroupPerm')->fetchOne();
-        if ($entity)
+        $entity = \XF::finder('XF:Option')
+                     ->whereId('sv_addBanUserGroupPerm')
+                     ->fetchOne();
+        if ($entity !== null)
         {
             $entity->option_value = $val;
             $entity->save();
         }
     }
-
 }
