@@ -9,9 +9,6 @@ use XF\Service\User\UserGroupChange;
  */
 class User extends XFCP_User
 {
-    /** @var \Closure[] */
-    protected $svBanUserSavableFn = [];
-
     protected function _postSave()
     {
         $rejectionChange = $this->isStateChanged('user_state', 'rejected');
