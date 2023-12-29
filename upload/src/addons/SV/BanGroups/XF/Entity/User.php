@@ -81,15 +81,21 @@ class User extends XFCP_User
             $userGroupChangeService->removeUserGroupChange($userId, 'svDisabledUserGroup');
         }
 
-        $permBanGroup = (int)($options->sv_addBanUserGroupPerm ?? 0);
-        $tempBanGroup = (int)($options->addBanUserGroup ?? 0);
-        if ($banChanged === 'enter')
+        if ($this->Ban !== null && !$this->Ban->end_date)
         {
-            $userGroupChangeService->addUserGroupChange($userId, 'svDisabledUserGroup', $disableGroup);
+            $banGroupId = (int)($options->sv_addBanUserGroupPerm ?? 0);
+        }
+        else
+        {
+            $banGroupId = (int)($options->addBanUserGroup ?? 0);
+        }
+        if ($banGroupId !== 0 && $banChanged === 'enter')
+        {
+            $userGroupChangeService->addUserGroupChange($userId, 'banGroup', $disableGroup);
         }
         else if ($banChanged !== null)
         {
-            $userGroupChangeService->removeUserGroupChange($userId, 'svDisabledUserGroup');
+            $userGroupChangeService->removeUserGroupChange($userId, 'banGroup');
         }
     }
 }
