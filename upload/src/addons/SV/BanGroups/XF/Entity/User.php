@@ -89,14 +89,10 @@ class User extends XFCP_User
 
         if ($banChanged !== null)
         {
-            if ($this->Ban !== null && !$this->Ban->end_date)
-            {
-                $banGroupId = (int)($options->sv_addBanUserGroupPerm ?? 0);
-            }
-            else
-            {
-                $banGroupId = (int)($options->addBanUserGroup ?? 0);
-            }
+            /** @var UserBan $ban */
+            $ban = $this->Ban;
+            $banGroupId = $ban !== null ? $ban->getSvBanGroup() : 0;
+
             if ($banGroupId !== 0 && $banChanged === 'enter')
             {
                 $userGroupChangeService->addUserGroupChange($userId, 'banGroup', $banGroupId);

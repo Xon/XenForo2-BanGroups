@@ -3,20 +3,49 @@
 namespace SV\BanGroups\XF\Entity;
 
 use SV\BanGroups\Globals;
+use XF\Service\User\UserGroupChange as UserGroupChangeService;
 
 class UserBan extends XFCP_UserBan
 {
-    protected function setIsBanned($isBanned)
+    protected function _postSave()
+    {
+        parent::_postSave();
+
+        if ($this->isUpdate() && $this->isChanged('end_date') && ($this->end_date === 0 || $this->getExistingValue('end_date') === 0))
+        {
+            // change from being temp to perma-banned or the reverse
+            $this->whenSaveable(function() {
+                $userId = $this->user_id;
+                /** @var UserGroupChangeService $userGroupChangeService */
+                $userGroupChangeService = \XF::service('XF:User\UserGroupChange');
+
+                $banGroupId = $this->getSvBanGroup();
+                $userGroupChangeService->removeUserGroupChange($userId, 'banGroup');
+                if ($banGroupId !== 0)
+                {
+                    $userGroupChangeService->addUserGroupChange($userId, 'banGroup', $banGroupId);
+                }
+            });
+        }
+    }
+
+    public function getSvBanGroup(): int
     {
         if (Globals::$isSpamCleaningBan ?? false)
         {
-            $this->setOption('ban_user_group', \XF::options()->sv_addBanUserGroupSpam);
+            return (int)(\XF::options()->sv_addBanUserGroupSpam ?? 0);
         }
         else if (!$this->end_date)
         {
-            $this->setOption('ban_user_group', \XF::options()->sv_addBanUserGroupPerm);
+            return (int)(\XF::options()->sv_addBanUserGroupPerm ?? 0);
         }
 
+        return (int)(\XF::options()->addBanUserGroup ?? 0);
+    }
+
+    protected function setIsBanned($isBanned)
+    {
+        $this->setOption('ban_user_group', $this->getSvBanGroup());
         try
         {
             parent::setIsBanned($isBanned);
