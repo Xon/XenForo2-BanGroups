@@ -16,9 +16,11 @@ class Setup extends AbstractSetup
 
     public function postInstall(array &$stateChanges): void
     {
+        parent::postInstall($stateChanges);
+
         $options = \XF:: options();
-        $val = $options->addBanUserGroup;
-        if (!$val)
+        $val = (int)($options->addBanUserGroup ?? 0);
+        if ($val === 0)
         {
             return;
         }
