@@ -2,4 +2,10 @@
 
 Add users to various groups depending on how they are banned or if they are rejected/disabled
 
-Note; does not switch groups if the user goes from perma-banned to temp banned or vis-versa.
+On install, the "Add User Group on Ban" setting is copied into the new ban group settings.
+
+## Options
+- Add User Group on Ban (spamclean)
+- Add User Group on Ban (Permaban)
+ -Add user group on reject
+- Add user group on disable
