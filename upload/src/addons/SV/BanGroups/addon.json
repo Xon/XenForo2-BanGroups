@@ -9,7 +9,8 @@
     "faq_url": "",
     "support_url": "https://xenforo.com/community/resources/ban-groups.6075/",
     "extra_urls": {
-        "License": "MIT License"
+        "License": "MIT License",
+        "Add-on site": "https://atelieraphelion.com/products/ban-groups.202/"
     },
     "require" : {
         "XF": [2020070, "XenForo 2.2.0+"],
