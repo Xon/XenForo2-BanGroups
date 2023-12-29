@@ -14,14 +14,15 @@ class User extends XFCP_User
 
     protected function _postSave()
     {
-        if ($this->isUpdate() && $this->isChanged('user_state'))
+        $rejectionChange = $this->isStateChanged('user_state', 'rejected');
+        $disabledChange = $this->isStateChanged('user_state', 'disabled') ;
+
+        if ($rejectionChange !== false || $disabledChange !== false)
         {
             $options = \XF::options();
             /** @var UserGroupChange $userGroupChangeService */
             $userGroupChangeService = $this->app()->service('XF:User\UserGroupChange');
-
-            $rejectionChange = $this->isStateChanged('user_state', 'rejected');
-            if ($rejectionChange)
+            if ($rejectionChange !== false)
             {
                 $rejectGroup = isset($options->sv_addRejectUserGroup) ? (int)$options->sv_addRejectUserGroup : 0;
                 $this->svBanUserSavableFn[] = function () use ($rejectionChange, $rejectGroup, $userGroupChangeService) {
@@ -35,9 +36,7 @@ class User extends XFCP_User
                     }
                 };
             }
-
-            $disabledChange = $this->isStateChanged('user_state', 'disabled');
-            if ($disabledChange)
+            if ($disabledChange !== false)
             {
                 $disableGroup = isset($options->sv_addDisableUserGroup) ? (int)$options->sv_addDisableUserGroup : 0;
                 $this->svBanUserSavableFn[] = function () use ($disabledChange, $disableGroup, $userGroupChangeService) {
