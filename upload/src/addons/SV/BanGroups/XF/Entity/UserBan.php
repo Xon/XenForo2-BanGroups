@@ -3,6 +3,7 @@
 namespace SV\BanGroups\XF\Entity;
 
 use SV\BanGroups\Globals;
+use SV\StandardLib\Helper;
 use XF\Service\User\UserGroupChange as UserGroupChangeService;
 
 class UserBan extends XFCP_UserBan
@@ -16,8 +17,7 @@ class UserBan extends XFCP_UserBan
             // change from being temp to perma-banned or the reverse
             $this->whenSaveable(function() {
                 $userId = $this->user_id;
-                /** @var UserGroupChangeService $userGroupChangeService */
-                $userGroupChangeService = \XF::service('XF:User\UserGroupChange');
+                $userGroupChangeService = Helper::service(UserGroupChangeService::class);
 
                 $banGroupId = $this->getSvBanGroup();
                 $userGroupChangeService->removeUserGroupChange($userId, 'banGroup');

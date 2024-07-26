@@ -2,6 +2,7 @@
 
 namespace SV\BanGroups\XF\Entity;
 
+use SV\StandardLib\Helper;
 use XF\Service\User\UserGroupChange as UserGroupChangeService;
 use function func_get_args;
 
@@ -56,8 +57,7 @@ class User extends XFCP_User
 
     protected function svRebuildStateGroups(?string $rejectionChange, ?string $disabledChange, ?string $banChanged): void
     {
-        /** @var UserGroupChangeService $userGroupChangeService */
-        $userGroupChangeService = \XF::service('XF:User\UserGroupChange');
+        $userGroupChangeService = Helper::service(UserGroupChangeService::class);
         $options = \XF::options();
         $userId = $this->user_id;
 

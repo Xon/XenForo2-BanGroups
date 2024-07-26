@@ -2,6 +2,7 @@
 
 namespace SV\BanGroups;
 
+use SV\StandardLib\Helper;
 use XF\AddOn\AbstractSetup;
 use XF\AddOn\StepRunnerInstallTrait;
 use XF\AddOn\StepRunnerUninstallTrait;
@@ -18,7 +19,7 @@ class Setup extends AbstractSetup
     {
         parent::postInstall($stateChanges);
 
-        $options = \XF:: options();
+        $options = \XF::options();
         $val = (int)($options->addBanUserGroup ?? 0);
         if ($val === 0)
         {
@@ -26,8 +27,7 @@ class Setup extends AbstractSetup
         }
 
         $options->sv_addBanUserGroupSpam = $val;
-        /** @var Option $entity */
-        $entity = \XF::finder('XF:Option')
+        $entity = Helper::finder(\XF\Finder\Option::class)
                      ->whereId('sv_addBanUserGroupSpam')
                      ->fetchOne();
         if ($entity !== null)
@@ -37,8 +37,7 @@ class Setup extends AbstractSetup
         }
 
         $options->sv_addBanUserGroupPerm = $val;
-        /** @var Option $entity */
-        $entity = \XF::finder('XF:Option')
+        $entity = Helper::finder(\XF\Finder\Option::class)
                      ->whereId('sv_addBanUserGroupPerm')
                      ->fetchOne();
         if ($entity !== null)
